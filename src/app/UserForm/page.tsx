@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './UserForm.module.css'; // יבוא הסטיילים
 
 interface FormData {
-    idNumber: string;
+    idNumber: number;
     firstName: string;
     lastName: string;
     birthDate: string;
@@ -20,7 +20,7 @@ interface FormErrors {
 
 export default function UserForm() {
     const [formData, setFormData] = useState<FormData>({
-        idNumber: '',
+        idNumber: 0,
         firstName: '',
         lastName: '',
         birthDate: '',
@@ -33,26 +33,22 @@ export default function UserForm() {
         const newErrors: FormErrors = {};
 
         // בדיקת תעודת זהות
-        if (!/^[0-9]{1,9}$/.test(formData.idNumber)) {
+        if (formData.idNumber>1000000000) {
             newErrors.idNumber = 'String must contain at least 9 character(s)';
         }
 
-        // בדיקת שם פרטי
         if (formData.firstName.length < 2) {
             newErrors.firstName = 'String must contain at least 2 character(s)';
         }
 
-        // בדיקת שם משפחה
         if (formData.lastName.length < 2) {
             newErrors.lastName = 'String must contain at least 2 character(s)';
         }
 
-        // בדיקת תאריך לידה
         if (!formData.birthDate || new Date(formData.birthDate) >= new Date()) {
             newErrors.birthDate = 'Date of Birth must be in the past';
         }
 
-        // בדיקת כתובת אימייל
         if (!/\S+@\S+\.\S+/.test(formData.email)) {
             newErrors.email = 'Invalid email';
         }
@@ -72,7 +68,7 @@ export default function UserForm() {
         e.preventDefault();
         if (validateForm()) {
             console.log(formData);
-            setFormData({ idNumber: '', firstName: '', lastName: '', birthDate: '', email: '' });
+            setFormData({ idNumber: 0, firstName: '', lastName: '', birthDate: '', email: '' });
             setErrors({});
         }
     };
